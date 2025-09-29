@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk | Nadella</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" href="/css/login.css"> 
+    
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    
+    <div class="auth-container" data-aos="fade-left" data-aos-duration="2000">
+        <a href="/index.html" class="back-link">
+            <i data-feather="arrow-left"></i>
+            Kembali
+        </a>
+
+        <div class="auth-header">
+            <div class="auth-logo">
+                <img src="/favicon.png" alt="Logo Nadella">
+                <h1>Nadella</h1>
+            </div>
+            <p class="auth-subtitle">Masuk ke akun Anda</p>
+        </div>
+
+        <div class="auth-form">
+            <div id="alert" class="alert"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required placeholder="Masukkan email Anda">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" required placeholder="Masukkan password Anda">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    <i data-feather="log-in"></i>
+                    Masuk
+                </button>
+            </form>
+        </div>
+
+        <div class="auth-footer">
+            <p>Belum punya akun? <a href="/register.html">Daftar sekarang</a></p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        AOS.init();
+        feather.replace();
+
+        const form = document.getElementById("loginForm");
+        const loginBtn = document.getElementById("loginBtn");
+        const alertDiv = document.getElementById("alert");
+
+        function showAlert(message, type) {
+            if (type === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            } else if (type === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: message,
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+
+        function setLoading(isLoading) {
+            if (isLoading) {
+                loginBtn.classList.add("loading");
+                loginBtn.disabled = true;
+            } else {
+                loginBtn.classList.remove("loading");
+                loginBtn.disabled = false;
+            }
+        }
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            setLoading(true);
+            
+            const formData = new FormData(form);
+            const payload = {
+                email: formData.get("email"),
+                password: formData.get("password")
+            };
+
+            try {
+                const res = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                
+                if (res.ok) {
+                    const normalizedUser = {
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.profile?.full_name || data.user.user_metadata?.full_name || data.user.email.split('@')[0],
+                        avatar: data.user.profile?.avatar_url || data.user.user_metadata?.avatar_url,
+                        role: data.user.role || 'user',
+                        provider: 'email'
+                    };
+                    
+                    localStorage.setItem('user', JSON.stringify(normalizedUser));
+                    
+                    if (data.session?.access_token) {
+                        localStorage.setItem('access_token', data.session.access_token);
+                    }
+                    // Store refresh token as well for auto-refresh
+                    if (data.session?.refresh_token) {
+                        localStorage.setItem('refresh_token', data.session.refresh_token);
+                    }
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Berhasil!',
+                        text: `Selamat datang, ${normalizedUser.name}!`,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = "/dashboard.html";
+                    });
+                } else {
+                    showAlert(data.error || "Terjadi kesalahan saat login", "error");
+                }
+            } catch (error) {
+                showAlert("Koneksi bermasalah. Silakan coba lagi.", "error");
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.hash.substring(1));
+            const accessToken = urlParams.get('access_token');
+            const refreshToken = urlParams.get('refresh_token');
+            const type = urlParams.get('type');
+            
+            if (accessToken) {
+                try {
+                    const payload = JSON.parse(atob(accessToken.split('.')[1]));
+                    const userData = {
+                        id: payload.sub,
+                        email: payload.email,
+                        name: payload.user_metadata?.full_name || payload.email,
+                        avatar: payload.user_metadata?.avatar_url,
+                        provider: payload.app_metadata?.provider
+                    };
+                    
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    localStorage.setItem('access_token', accessToken);
+                    
+                    if (refreshToken) {
+                        localStorage.setItem('refresh_token', refreshToken);
+                    }
+                    
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Berhasil!',
+                        text: `Selamat datang, ${userData.name}!`,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = "/index.html";
+                    });
+                } catch (error) {
+                    console.error('Error parsing token:', error);
+                    showAlert("Token tidak valid", "error");
+                }
+            }
+        });
+    </script>
+</body>
+</html>

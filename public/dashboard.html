@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Nadella</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/css/admin.css" />
+  <link rel="stylesheet" href="/css/chat.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-header">
+          <a href="./dashboard.html" class="sidebar-logo">
+            <img src="/favicon.png" alt="Nadella Logo">
+            <span>Nadella</span>
+          </a>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item active">
+            <i data-feather="layout"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="./members.html" class="nav-item">
+            <i data-feather="user"></i>
+            <span>Members</span>
+          </a>
+          <a href="./products.html" class="nav-item">
+            <i data-feather="shopping-bag"></i>
+            <span>Products</span>
+          </a>
+          <a href="./orders.html" class="nav-item">
+            <i data-feather="shopping-cart"></i>
+            <span>Orders</span>
+          </a>
+        </nav>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="user-profile">
+          <div id="admin-avatar-sidebar" class="profile-avatar"></div>
+          <div class="profile-info">
+            <span id="admin-name-sidebar" class="profile-name">Loading...</span>
+            <span class="profile-role">User</span>
+          </div>
+        </div>
+        <button class="btn-logout" id="dashboard-logout-btn">
+          <i data-feather="log-out"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <button class="sidebar-toggle" id="sidebar-toggle">
+          <i data-feather="menu"></i>
+        </button>
+      </header>
+
+      <div class="page-content">
+        <div class="welcome-header">
+          <div class="welcome-row">
+            <div>
+              <h1>Dashboard</h1>
+              <p>Selamat datang di panel administrasi Nadella</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i data-feather="users"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Total Members</span>
+              <span class="stat-number" id="total-members">0</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i data-feather="shopping-bag"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Total Products</span>
+              <span class="stat-number" id="total-products">0</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i data-feather="shopping-cart"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Total Orders</span>
+              <span class="stat-number" id="total-orders">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <h3 class="section-title">Aktivitas Terbaru</h3>
+          <ul class="activity-list" id="recent-activity-list">
+            <li class="activity-item">
+              <i data-feather="info"></i>
+              <div class="activity-text">Belum ada aktivitas terbaru</div>
+              <div class="activity-time">-</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    // Initialize authentication check
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is authenticated
+      const user = localStorage.getItem('user');
+      const accessToken = localStorage.getItem('access_token');
+      
+      if (!user || !accessToken) {
+        // Redirect to login if not authenticated
+        window.location.href = '/login.html';
+        return;
+      }
+
+      // Initialize feather icons
+      feather.replace();
+
+      // Load user information in the sidebar
+      const userData = JSON.parse(user);
+      document.getElementById('admin-name-sidebar').textContent = userData.name || userData.email;
+      
+      // Set user avatar if available
+      const avatarElement = document.getElementById('admin-avatar-sidebar');
+      if (userData.avatar) {
+        avatarElement.style.background = `url(${userData.avatar}) center/cover`;
+      } else {
+        avatarElement.textContent = (userData.name || userData.email).charAt(0).toUpperCase();
+      }
+
+      // Add logout functionality
+      document.getElementById('dashboard-logout-btn').addEventListener('click', function() {
+        // Show confirmation dialog
+        Swal.fire({
+          title: 'Keluar dari Akun?',
+          text: 'Anda yakin ingin keluar dari akun Anda?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#4A6C6A',
+          cancelButtonColor: '#6b7280',
+          confirmButtonText: 'Ya, Keluar',
+          cancelButtonText: 'Batal',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Clear user data from localStorage
+            localStorage.removeItem('user');
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            
+            // Redirect to login
+            window.location.href = '/login.html';
+          }
+        });
+      });
+
+      // Load dashboard statistics from API
+      loadDashboardStats();
+    });
+
+    async function loadDashboardStats() {
+      try {
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+          window.location.href = '/login.html';
+          return;
+        }
+
+        const response = await fetch('/api/dashboard', {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+
+        if (response.status === 401) {
+          // Token expired or invalid, redirect to login
+          localStorage.removeItem('user');
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          window.location.href = '/login.html';
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch dashboard statistics');
+        }
+
+        const data = await response.json();
+
+        // Update statistics
+        document.getElementById('total-members').textContent = data.stats.totalMembers;
+        document.getElementById('total-products').textContent = data.stats.totalProducts;
+        document.getElementById('total-orders').textContent = data.stats.totalOrders;
+        
+        // Update recent activities
+        const activityList = document.getElementById('recent-activity-list');
+        activityList.innerHTML = '';
+        
+        if (data.recentActivities.length === 0) {
+          activityList.innerHTML = `
+            <li class="activity-item">
+              <i data-feather="info"></i>
+              <div class="activity-text">Belum ada aktivitas terbaru</div>
+              <div class="activity-time">-</div>
+            </li>
+          `;
+        } else {
+          data.recentActivities.forEach(activity => {
+            const li = document.createElement('li');
+            li.className = 'activity-item';
+            li.innerHTML = `
+              <i data-feather="${activity.icon}"></i>
+              <div class="activity-text">${activity.text}</div>
+              <div class="activity-time">${activity.time}</div>
+            `;
+            activityList.appendChild(li);
+          });
+        }
+        
+        // Replace the icons with feather icons
+        feather.replace();
+      } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+        
+        // Show error to user
+        const activityList = document.getElementById('recent-activity-list');
+        activityList.innerHTML = `
+          <li class="activity-item">
+            <i data-feather="alert-triangle"></i>
+            <div class="activity-text">Gagal memuat data dashboard</div>
+            <div class="activity-time">-</div>
+          </li>
+        `;
+        
+        feather.replace();
+      }
+    }
+  </script>
+  
+    <!-- Chat bubble and window (from index.html) -->
+    <div id="chat-bubble" class="chat-bubble">
+      <i data-feather="message-square"></i>
+    </div>
+
+    <div id="chat-window" class="chat-window hidden">
+      <div class="chat-header">
+        <div class="header-title">
+          <img src="mbah.png" alt="Icon Mbah" class="header-icon">
+          <h3>Tanya-Mbah</h3>
+        </div>
+        <div class="header-buttons">
+          <button id="clear-chat-btn" title="Hapus Obrolan"><i data-feather="trash-2"></i></button>
+          <button id="collapse-chat-btn" title="Perkecil"><i data-feather="chevron-down"></i></button>
+          <button id="close-chat-btn" title="Tutup"><i data-feather="x"></i></button>
+        </div>
+      </div>
+      <div id="chat-messages" class="chat-messages">
+      </div>
+      <div class="chat-input-area">
+        <form id="chat-form">
+          <input type="text" id="chat-input" placeholder="Ketik pertanyaan Anda..." disabled>
+          <button type="submit" id="send-btn" disabled><i data-feather="send"></i></button>
+        </form>
+      </div>
+    </div>
+</body>
+</html>

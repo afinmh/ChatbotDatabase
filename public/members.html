@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members - Admin</title>
+  <link rel="icon" type="image/png" href="../favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="../css/admin.css" />
+  <link rel="stylesheet" href="../css/chat.css" />
+  
+</head>
+<body>
+  <div class="admin-layout">
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-header">
+          <a href="../dashboard.html" class="sidebar-logo">
+            <img src="../favicon.png" alt="Nadella Logo">
+            <span>Nadella</span>
+          </a>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item">
+            <i data-feather="layout"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item active">
+            <i data-feather="user"></i>
+            <span>Members</span>
+          </a>
+          <a href="./products.html" class="nav-item">
+            <i data-feather="shopping-bag"></i>
+            <span>Products</span>
+          </a>
+          <a href="./orders.html" class="nav-item">
+            <i data-feather="shopping-cart"></i>
+            <span>Orders</span>
+          </a>
+        </nav>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="user-profile">
+          <div id="admin-avatar-sidebar" class="profile-avatar"></div>
+          <div class="profile-info">
+            <span id="admin-name-sidebar" class="profile-name">Loading...</span>
+            <span class="profile-role">User</span>
+          </div>
+        </div>
+        <button class="btn-logout" id="members-logout-btn">
+          <i data-feather="log-out"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <button class="sidebar-toggle" id="sidebar-toggle">
+          <i data-feather="menu"></i>
+        </button>
+      </header>
+
+      <div class="page-content">
+        <div class="welcome-header">
+          <div class="welcome-row">
+            <h1>Members</h1>
+            <button class="btn-primary" id="add-member">
+              <i data-feather="plus"></i>
+              <span>Tambah Member</span>
+            </button>
+          </div>
+        </div>
+
+        <section class="card">
+          <div id="member-grid" class="cards-grid"></div>
+          <div class="pagination" id="member-pagination"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Create/Edit -->
+  <div class="modal" id="member-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="member-modal-title">Tambah Member</h3>
+        <button class="modal-close" data-close>
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="member-form">
+          <input type="hidden" id="member-id" />
+          <div class="form-group">
+            <label for="member-name">Nama</label>
+            <input type="text" id="member-name" placeholder="Nama lengkap member" required />
+          </div>
+          <div class="form-group">
+            <label for="member-email">Email</label>
+            <input type="email" id="member-email" placeholder="Alamat email" required />
+          </div>
+          <div class="form-group">
+            <label for="member-phone">Telepon</label>
+            <input type="text" id="member-phone" placeholder="Nomor telepon" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close>Batal</button>
+        <button class="btn-primary" id="save-member">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/admin.js"></script>
+  <script src="../js/members.js"></script>
+  <script src="../js/main.js"></script>
+  
+  <script>
+    // Initialize logout functionality for the members page
+    document.addEventListener('DOMContentLoaded', function() {
+      const logoutBtn = document.getElementById('members-logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          // Show confirmation dialog
+          Swal.fire({
+            title: 'Keluar dari Akun?',
+            text: 'Anda yakin ingin keluar dari akun Anda?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4A6C6A',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Keluar',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Clear user data from localStorage
+              localStorage.removeItem('user');
+              localStorage.removeItem('access_token');
+              localStorage.removeItem('refresh_token');
+              
+              // Redirect to login
+              window.location.href = '/login.html';
+            }
+          });
+        });
+      }
+    });
+  </script>
+  
+  <!-- Chat bubble and window (from index.html) -->
+  <div id="chat-bubble" class="chat-bubble">
+    <i data-feather="message-square"></i>
+  </div>
+
+  <div id="chat-window" class="chat-window hidden">
+    <div class="chat-header">
+      <div class="header-title">
+        <img src="mbah.png" alt="Icon Mbah" class="header-icon">
+        <h3>Tanya-Mbah</h3>
+      </div>
+      <div class="header-buttons">
+        <button id="clear-chat-btn" title="Hapus Obrolan"><i data-feather="trash-2"></i></button>
+        <button id="collapse-chat-btn" title="Perkecil"><i data-feather="chevron-down"></i></button>
+        <button id="close-chat-btn" title="Tutup"><i data-feather="x"></i></button>
+      </div>
+    </div>
+    <div id="chat-messages" class="chat-messages">
+    </div>
+    <div class="chat-input-area">
+      <form id="chat-form">
+        <input type="text" id="chat-input" placeholder="Ketik pertanyaan Anda..." disabled>
+        <button type="submit" id="send-btn" disabled><i data-feather="send"></i></button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
