@@ -91,7 +91,7 @@ function handleLogout() {
         title: 'Anda yakin ingin keluar?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#4A6C6A',
+            confirmButtonColor: '#4A6C8A',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ya, keluar',
         cancelButtonText: 'Batal'
@@ -252,8 +252,8 @@ async function handleProfileUpdate(e) {
         Swal.fire({
             title: 'Sesi Berakhir',
             text: 'Anda harus login terlebih dahulu untuk menyimpan perubahan.',
-            icon: 'warning',
-            confirmButtonColor: '#4A6C6A'
+               icon: 'warning',
+               confirmButtonColor: '#4A6C8A'
         });
         return;
     }
@@ -312,7 +312,7 @@ async function handleProfileUpdate(e) {
             title: 'Berhasil!',
             text: 'Profil Anda telah berhasil diperbarui.',
             icon: 'success',
-            confirmButtonColor: '#4A6C6A'
+        confirmButtonColor: '#4A6C8A'
         });
 
     } catch (error) {
@@ -321,7 +321,7 @@ async function handleProfileUpdate(e) {
             title: 'Error!',
             text: error.message || 'Terjadi kesalahan saat memperbarui profil.',
             icon: 'error',
-            confirmButtonColor: '#4A6C6A'
+            confirmButtonColor: '#4A6C8A'
         });
     }
 }
@@ -331,17 +331,17 @@ async function handleAvatarSelected(e) {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-        Swal.fire({ title: 'File tidak valid', text: 'Pilih gambar (PNG/JPG).', icon: 'warning', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'File tidak valid', text: 'Pilih gambar (PNG/JPG).', icon: 'warning', confirmButtonColor: '#4A6C8A' });
         return;
     }
     if (file.size > 3 * 1024 * 1024) {
-        Swal.fire({ title: 'Terlalu besar', text: 'Maksimal 3MB.', icon: 'warning', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Terlalu besar', text: 'Maksimal 3MB.', icon: 'warning', confirmButtonColor: '#4A6C8A' });
         return;
     }
 
     const token = localStorage.getItem('access_token');
     if (!token) {
-        Swal.fire({ title: 'Sesi berakhir', text: 'Silakan login ulang.', icon: 'warning', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Sesi berakhir', text: 'Silakan login ulang.', icon: 'warning', confirmButtonColor: '#4A6C8A' });
         return;
     }
 
@@ -375,16 +375,16 @@ async function handleAvatarSelected(e) {
 
         if (typeof updateAuthSection === 'function') { updateAuthSection(); }
 
-        Swal.fire({ title: 'Berhasil', text: 'Foto profil diperbarui.', icon: 'success', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Berhasil', text: 'Foto profil diperbarui.', icon: 'success', confirmButtonColor: '#2F8ED6' });
     } catch (err) {
-        Swal.fire({ title: 'Gagal', text: err.message, icon: 'error', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Gagal', text: err.message, icon: 'error', confirmButtonColor: '#4A6C8A' });
     }
 }
 
 async function handleChangePassword() {
     const token = localStorage.getItem('access_token');
     if (!token) {
-        Swal.fire({ title: 'Sesi berakhir', text: 'Silakan login ulang.', icon: 'warning', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Sesi berakhir', text: 'Silakan login ulang.', icon: 'warning', confirmButtonColor: '#4A6C8A' });
         return;
     }
 
@@ -407,7 +407,7 @@ async function handleChangePassword() {
         showCancelButton: true,
         confirmButtonText: 'Simpan',
         cancelButtonText: 'Batal',
-        confirmButtonColor: '#4A6C6A',
+    confirmButtonColor: '#4A6C8A',
         willOpen: () => {
             // Enter submits, Escape cancels
             const pass = Swal.getPopup().querySelector('#swal-pass');
@@ -450,8 +450,8 @@ async function handleChangePassword() {
         if (hint) hint.style.display = 'none';
         if (btnText) btnText.textContent = 'Ganti Password';
 
-        Swal.fire({ title: 'Berhasil', text: 'Password berhasil diperbarui.', icon: 'success', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Berhasil', text: 'Password berhasil diperbarui.', icon: 'success', confirmButtonColor: '#2F8ED6' });
     } catch (err) {
-        Swal.fire({ title: 'Gagal', text: err.message, icon: 'error', confirmButtonColor: '#4A6C6A' });
+    Swal.fire({ title: 'Gagal', text: err.message, icon: 'error', confirmButtonColor: '#4A6C8A' });
     }
 }

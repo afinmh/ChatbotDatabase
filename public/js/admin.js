@@ -127,7 +127,7 @@ function handleLogout() {
         title: 'Anda yakin ingin keluar?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#5A7D7C',
+    confirmButtonColor: '#4A6C8A',
         cancelButtonColor: '#E53E3E',
         confirmButtonText: 'Ya, keluar',
         cancelButtonText: 'Batal'

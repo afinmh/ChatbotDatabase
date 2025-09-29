@@ -6,8 +6,8 @@
     --bg-main: #F8F9FA;
     --bg-sidebar: rgba(255, 255, 255, 0.7);
     --bg-card: rgba(255, 255, 255, 0.8);
-    --accent-primary: #4A6C6A;
-    --accent-secondary: #E6F0EE;
+    --accent-primary: #4A6C8A;
+    --accent-secondary: #EAF3FB;
     --text-primary: #1F2937;
     --text-secondary: #6B7280;
     --text-tertiary: #9CA3AF;
@@ -245,7 +245,7 @@ body {
     right: -100px;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(74, 108, 106, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(74, 108, 138, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
     z-index: -1;
@@ -258,7 +258,7 @@ body {
     left: -150px;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(230, 240, 238, 0.6) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(234, 243, 251, 0.6) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
     z-index: -1;
@@ -634,7 +634,7 @@ body {
 }
 .btn-process i { width: 16px; height: 16px; }
 .btn-process:hover { background: #FDE68A; }
-.status-check { display: inline-flex; align-items:center; color: #16A34A; }
+.status-check { display: inline-flex; align-items:center; color: #2F8ED6; }
 .status-check i { width: 18px; height: 18px; }
 
 .btn-processed {

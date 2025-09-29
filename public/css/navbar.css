@@ -30,7 +30,7 @@ html {
     --bg-navbar: #F5F5F4; /* Warna batu/putih gading yang hangat */
     --text-dark: #374151; /* Abu-abu gelap yang lebih hangat */
     --text-light: #f9fafb; /* Putih pudar (tetap bagus di atas gambar) */
-    --accent: #5A7D7C;     /* Aksen warna Sage Green yang tenang dan premium */
+    --accent: #4A6C8A;     /* Aksen warna biru-tenang yang setara */
     --shadow: rgba(0, 0, 0, 0.07); /* Bayangan yang lebih lembut */
 }
 
@@ -129,9 +129,9 @@ html {
 }
 
 .login-btn:hover {
-    background: #4a6b6a;
+    background: #3E5973;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(90, 125, 124, 0.3);
+    box-shadow: 0 4px 12px rgba(62, 89, 115, 0.25);
 }
 
 /* User Profile Section */

@@ -1,9 +1,9 @@
 /* Anda harus sudah memiliki :root di file CSS utama Anda */
 :root {
-    --accent: #5A7D7C;
-    --accent-dark: #476261;
-    --accent-light: #a3b6b5;
-    --accent-super-light: #eef1f1;
+    --accent: #4A6C8A;
+    --accent-dark: #3E5973;
+    --accent-light: #A3B6D5;
+    --accent-super-light: #EEF3FB;
 }
 
 .chat-bubble {

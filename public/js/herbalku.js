@@ -26,7 +26,7 @@
     const token = getAccessToken();
     if (!token) {
       if (window.Swal && typeof Swal.fire === 'function') {
-        Swal.fire({ title:'Perlu Masuk', text:'Masuk dulu untuk menambah herbal.', icon:'info', confirmButtonText:'Masuk', showCancelButton:true, cancelButtonText:'Batal', confirmButtonColor:'#4A6C6A' }).then(r=>{ if(r.isConfirmed) window.location.href='/login.html'; });
+  Swal.fire({ title:'Perlu Masuk', text:'Masuk dulu untuk menambah herbal.', icon:'info', confirmButtonText:'Masuk', showCancelButton:true, cancelButtonText:'Batal', confirmButtonColor:'#4A6C8A' }).then(r=>{ if(r.isConfirmed) window.location.href='/login.html'; });
       } else { alert('Silakan login terlebih dahulu.'); }
       return;
     }
@@ -148,7 +148,7 @@
         const resp = await fetch(`/api/herbalpedia/${id}`, { method:'DELETE', headers });
         if (!resp.ok) {
           const t = await resp.text();
-          if (window.Swal) Swal.fire({ icon:'error', title:'Gagal', text: t || 'Gagal menghapus data', confirmButtonColor:'#4A6C6A' });
+          if (window.Swal) Swal.fire({ icon:'error', title:'Gagal', text: t || 'Gagal menghapus data', confirmButtonColor:'#4A6C8A' });
           else alert(t || 'Gagal menghapus');
           return;
         }
@@ -281,7 +281,7 @@
       }
 
       hideCreateModal();
-      try { if (window.Swal) Swal.fire({ icon:'success', title:'Tersimpan', text:'Perubahan berhasil disimpan.', confirmButtonColor:'#4A6C6A' }); } catch {}
+  try { if (window.Swal) Swal.fire({ icon:'success', title:'Tersimpan', text:'Perubahan berhasil disimpan.', confirmButtonColor:'#2F8ED6' }); } catch {}
       const pager = document.getElementById('my-herb-pagination');
       const active = pager?.querySelector('.page-btn.active');
       const page = active ? parseInt(active.getAttribute('data-page')) : 1;

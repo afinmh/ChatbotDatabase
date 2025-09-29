@@ -2,12 +2,12 @@
     --bg-light: #F5F5F4; 
     --text-dark: #374151;
     --text-light: #f9fafb;
-    --accent: #5A7D7C;
+    --accent: #4A6C8A;
     --shadow-soft: rgba(0, 0, 0, 0.15);
     --error-red: #DC2626;
-    --success-green: #16A34A;
+    --success-green: #2F8ED6;
     --border-color: #E5E7EB;
-    --input-focus: #5A7D7C;
+    --input-focus: #4A6C8A;
 }
 
 * {
@@ -107,7 +107,7 @@ body {
     color: #9CA3AF;
 }
 .form-input:focus {
-    outline: none; border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(90, 125, 124, 0.15);
+    outline: none; border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(74,108,138,0.12);
 }
 .btn {
     width: 100%; padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.6rem;
@@ -118,7 +118,7 @@ body {
     margin-bottom: 0.8rem;
 }
 .btn-primary:hover {
-    background: #4a6b6a; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(90, 125, 124, 0.25);
+    background: #3E5973; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(62,89,115,0.18);
 }
 .btn-google {
     background: white; color: var(--text-dark); border: 1px solid var(--border-color); 

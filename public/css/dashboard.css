@@ -43,7 +43,7 @@
 
 .feature-card i {
     font-size: 3rem;
-    color: #5A7D7C;
+    color: #4A6C8A;
     margin-bottom: 1rem;
 }
 
@@ -74,12 +74,12 @@
 }
 
 .btn-primary {
-    background-color: #5A7D7C;
+    background-color: #4A6C8A;
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #4a6a69;
+    background-color: #3E5973;
 }
 
 @media (max-width: 768px) {

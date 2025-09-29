@@ -440,7 +440,7 @@ function logout() {
         text: 'Anda yakin ingin keluar dari akun Anda?',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#5A7D7C',
+    confirmButtonColor: '#4A6C8A',
         cancelButtonColor: '#6b7280',
         confirmButtonText: 'Ya, Keluar',
         cancelButtonText: 'Batal',
@@ -508,7 +508,7 @@ function performClientLogout() {
         title: 'Logout Berhasil!',
         text: 'Anda telah berhasil keluar dari akun',
         icon: 'success',
-        confirmButtonColor: '#5A7D7C',
+    confirmButtonColor: '#4A6C8A',
         confirmButtonText: 'OK',
         timer: 2000,
         timerProgressBar: true
